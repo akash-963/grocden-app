@@ -1,5 +1,6 @@
 // import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -13,22 +14,14 @@ class OrdersTab extends StatefulWidget {
 }
 
 class _OrdersTabState extends State<OrdersTab> {
-  // List<MyOrder> orders = [];
+  final userId = FirebaseAuth.instance.currentUser!.uid;
   List<MyOrder> ongoingOrders = [];
   List<MyOrder> previousOrders = [];
-  late String userId;
-
-  Future<void> getdetails() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    userId = prefs.getString('userId')!;
-    print(userId);
-    getOrdersDetails();
-  }
 
   // Inside _OrdersTabState
   void getOrdersDetails() async {
     try {
-      List<String> orderIds = await fetchOrderIdsForUser(userId);
+      List<String> orderIds = await fetchOrderIdsForUser();
       List<MyOrder> orders = await fetchOrdersDetails(orderIds);
 
       // Now you can use the 'orders' list as needed
@@ -44,17 +37,18 @@ class _OrdersTabState extends State<OrdersTab> {
 
 
   // Fetch order IDs from user collection
-  Future<List<String>> fetchOrderIdsForUser(String userId) async {
+  Future<List<String>> fetchOrderIdsForUser() async {
     try {
-      DocumentSnapshot userSnapshot = await FirebaseFirestore.instance
-          .collection('userCollection')
+      QuerySnapshot ordersSnapshot = await FirebaseFirestore.instance
+          .collection('shopCollection')
           .doc(userId)
+          .collection('orders')
           .get();
 
-      if (userSnapshot.exists) {
-        List<dynamic> orderIds = userSnapshot['OrdersHistory'];
+      if (ordersSnapshot.docs.isNotEmpty) {
+        List<String> orderIds = ordersSnapshot.docs.map((doc) => doc.id).toList();
         print(orderIds);
-        return List<String>.from(orderIds);
+        return orderIds;
       }
 
       return [];
@@ -129,7 +123,7 @@ class _OrdersTabState extends State<OrdersTab> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    getdetails();
+    getOrdersDetails();
   }
 
   @override

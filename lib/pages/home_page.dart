@@ -85,7 +85,7 @@ class _MyHomePageState extends State<MyHomePage> {
       body: buildPageView(),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Colors.green,
-        selectedItemColor: Color(0xff403b58),
+        selectedItemColor: Colors.white,
         currentIndex: bottomSelectedIndex,
         onTap: (index) {
           bottomTapped(index);

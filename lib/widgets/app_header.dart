@@ -11,7 +11,7 @@ class AppHeader extends StatelessWidget {
         children: [
           "Grocden.Com".text.xl5.bold.color(Colors.green).make(),
           5.heightBox,
-          "Products We Currently Offer".text.xl2.make(),
+          "Shop Name Come Here".text.xl2.make(),
         ],
       ),
     );

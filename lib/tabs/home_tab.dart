@@ -1,12 +1,6 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'dart:convert';
 import 'package:velocity_x/velocity_x.dart';
-import '../models/product_model.dart';
 import '../widgets/app_header.dart';
-import '../widgets/lists/product_list.dart';
 
 class HomeTab extends StatefulWidget {
   @override
@@ -22,48 +16,88 @@ class _HomeTabState extends State<HomeTab> {
       // backgroundColor: Colors.green,
         body: SafeArea(
           child: Container(
-            alignment: Alignment.center,
-            padding: EdgeInsets.fromLTRB(16, 16, 16, 16),
-            child: Center(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Container(
-                        height:100,
-                        width: 100,
-                        color: Colors.blue,
-                      ),
-                      Container(
-                        height: 100,
-                        width: 100,
-                        color: Colors.black,
-                      ),
-                    ],
+            padding: EdgeInsets.all(12),
+            child: Column(
+              // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                AppHeader(),
+                SizedBox(height: 16,),
+                "Dashboard".text.xl2.bold.color(Colors.green).make().p(8),
+                Container(
+                    height: MediaQuery.of(context).size.height / 5,
+                    padding: EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(25),
+                      border: Border.all(width: 2),
+                      // color: Colors.deepPurpleAccent,
+                    ),
+                    // child: GridView.count(
+                    //   shrinkWrap: true,
+                    //   crossAxisCount: 2,
+                    //
+                    //   itemCount: 5,
+                    //   itemBuilder: (BuildContext context, int index) {
+                    //     return Container(
+                    //       child: Column(
+                    //         children: [
+                    //           "Ongoing Orders".text.make(),
+                    //           "10".text.make(),
+                    //         ],
+                    //       ),
+                    //     );
+                    //   },
+                    //
+                    // ),
                   ),
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Container(
-                        height: 100,
-                        width: 100,
-                        color: Colors.green,
-                      ),
-                      Container(
-                        height: 100,
-                        width: 100,
-                        color: Colors.red,
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            )
+              ]
+            ),
           ),
         )
     );
 
   }
 }
+
+
+
+
+
+
+
+
+
+
+// class DashBoardModel {
+//   Rx<List<OngoingordersItemModel>> ongoingordersItemList = Rx([
+//     OngoingordersItemModel(
+//         ongoingOrdersText: "Ongoing Orders".obs, tenText: "10".obs),
+//     OngoingordersItemModel(
+//         ongoingOrdersText: "Completed Orders".obs, tenText: "57".obs),
+//     OngoingordersItemModel(
+//         ongoingOrdersText: "Total Orders".obs, tenText: "67".obs),
+//     OngoingordersItemModel(
+//         ongoingOrdersText: "Total Sales".obs, tenText: "1000".obs)
+//   ]);
+// }
+
+
+
+
+// class OngoingordersItemModel {
+//   OngoingordersItemModel({
+//     this.ongoingOrdersText,
+//     this.tenText,
+//     this.id,
+//   }) {
+//     ongoingOrdersText = ongoingOrdersText ?? Rx("Ongoing Orders");
+//     tenText = tenText ?? Rx("10");
+//     id = id ?? Rx("");
+//   }
+//
+//   Rx<String>? ongoingOrdersText;
+//
+//   Rx<String>? tenText;
+//
+//   Rx<String>? id;
+// }
