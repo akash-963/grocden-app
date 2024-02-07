@@ -1,10 +1,10 @@
-// import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/order_model.dart';
+import '../pages/order_details_page.dart';
+import '../widgets/tiles/order_tile.dart';
 
 class OrdersTab extends StatefulWidget {
   const OrdersTab({super.key});
@@ -75,6 +75,7 @@ class _OrdersTabState extends State<OrdersTab> {
           List<ProductOrderDetails> products = await fetchProductsForOrder(orderId);
 
           MyOrder order = MyOrder(
+            id: orderId,
             shop: orderSnapshot['shop'],
             buyer: orderSnapshot['buyer'],
             totalValue: orderSnapshot['totalValue'],
@@ -180,54 +181,54 @@ class OrderList extends StatelessWidget {
 }
 
 
-class OrderDetailsPage extends StatelessWidget {
-  final MyOrder order;
-  const OrderDetailsPage({super.key, required this.order});
+// class OrderDetailsPage extends StatelessWidget {
+//   final MyOrder order;
+//   const OrderDetailsPage({super.key, required this.order});
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return const Placeholder();
+//   }
+// }
 
-  @override
-  Widget build(BuildContext context) {
-    return const Placeholder();
-  }
-}
 
-
-class OrderTile extends StatelessWidget {
-  final MyOrder order;
-
-  const OrderTile({Key? key, required this.order}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      margin: EdgeInsets.all(8.0),
-      child: ListTile(
-        title: Text('Order ID: '),
-        //${order.orderId}'),
-        subtitle: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text('Shop: ${order.shop}'),
-            Text('Buyer: ${order.buyer}'),
-            Text('Total Value: ${order.totalValue}'),
-            Text('Status: ${order.status}'),
-            Text('Created Date: ${order.createdTimestamp.toDate()}'),
-            if (order.deliveredTimestamp != null)
-              Text('Delivered Date: ${order.deliveredTimestamp!.toDate()}'),
-            if (order.cancelledTimestamp != null)
-              Text('Cancelled Date: ${order.cancelledTimestamp!.toDate()}'),
-            // Display other order details as needed
-          ],
-        ),
-        onTap: () {
-          // Handle the tap event, e.g., navigate to a detailed order view
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => OrderDetailsPage(order: order),
-            ),
-          );
-        },
-      ),
-    );
-  }
-}
+// class OrderTile extends StatelessWidget {
+//   final MyOrder order;
+//
+//   const OrderTile({Key? key, required this.order}) : super(key: key);
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Card(
+//       margin: EdgeInsets.all(8.0),
+//       child: ListTile(
+//         title: Text('Order ID: '),
+//         //${order.orderId}'),
+//         subtitle: Column(
+//           crossAxisAlignment: CrossAxisAlignment.start,
+//           children: [
+//             Text('Shop: ${order.shop}'),
+//             Text('Buyer: ${order.buyer}'),
+//             Text('Total Value: ${order.totalValue}'),
+//             Text('Status: ${order.status}'),
+//             Text('Created Date: ${order.createdTimestamp.toDate()}'),
+//             if (order.deliveredTimestamp != null)
+//               Text('Delivered Date: ${order.deliveredTimestamp!.toDate()}'),
+//             if (order.cancelledTimestamp != null)
+//               Text('Cancelled Date: ${order.cancelledTimestamp!.toDate()}'),
+//             // Display other order details as needed
+//           ],
+//         ),
+//         onTap: () {
+//           // Handle the tap event, e.g., navigate to a detailed order view
+//           Navigator.push(
+//             context,
+//             MaterialPageRoute(
+//               builder: (context) => OrderDetailsPage(order: order),
+//             ),
+//           );
+//         },
+//       ),
+//     );
+//   }
+// }

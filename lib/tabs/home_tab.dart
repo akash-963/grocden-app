@@ -23,33 +23,91 @@ class _HomeTabState extends State<HomeTab> {
               children: [
                 AppHeader(),
                 SizedBox(height: 16,),
-                "Dashboard".text.xl2.bold.color(Colors.green).make().p(8),
+                "Dashboard".text.xl2.bold.color(Colors.grey).make().p(8),
                 Container(
-                    height: MediaQuery.of(context).size.height / 5,
-                    padding: EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(25),
-                      border: Border.all(width: 2),
-                      // color: Colors.deepPurpleAccent,
-                    ),
-                    // child: GridView.count(
-                    //   shrinkWrap: true,
-                    //   crossAxisCount: 2,
-                    //
-                    //   itemCount: 5,
-                    //   itemBuilder: (BuildContext context, int index) {
-                    //     return Container(
-                    //       child: Column(
-                    //         children: [
-                    //           "Ongoing Orders".text.make(),
-                    //           "10".text.make(),
-                    //         ],
-                    //       ),
-                    //     );
-                    //   },
-                    //
-                    // ),
+                  padding: EdgeInsets.all(8),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Container(
+                              height: MediaQuery.of(context).size.height / 10,
+                              // width: MediaQuery.of(context).size.width / 2.5,
+                              decoration: BoxDecoration(
+                                color: Colors.greenAccent,
+                              ),
+                              padding: EdgeInsets.symmetric(vertical: 8),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                children: [
+                                  "Ongoing Orders".text.xl2.color(Colors.black54).make(),
+                                  "23".text.xl.make(),
+                                ],
+                              ),
+                            ),
+                          ),
+                          SizedBox(width: 4), // Add some spacing between items
+                          Expanded(
+                            child: Container(
+                              height: MediaQuery.of(context).size.height / 10,
+                              decoration: BoxDecoration(
+                                color: Colors.blue,
+                              ),
+                              padding: EdgeInsets.symmetric(vertical: 8),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                children: [
+                                  "Completed Orders".text.xl2.color(Colors.black54).make(),
+                                  "23".text.xl.make(),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 4), // Add some spacing between rows
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Container(
+                              height: MediaQuery.of(context).size.height / 10,
+                              decoration: BoxDecoration(
+                                color: Colors.orangeAccent,
+                              ),
+                              padding: EdgeInsets.symmetric(vertical: 8),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                children: [
+                                  "Cancelled Orders".text.xl2.color(Colors.black54).make(),
+                                  "23".text.xl.make(),
+                                ],
+                              ),
+                            ),
+                          ),
+                          SizedBox(width: 4), // Add some spacing between items
+                          Expanded(
+                            child: Container(
+                              height: MediaQuery.of(context).size.height / 10,
+                              decoration: BoxDecoration(
+                                color: Colors.redAccent,
+                              ),
+                              padding: EdgeInsets.symmetric(vertical: 8),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                children: [
+                                  "Total Orders".text.xl2.color(Colors.black54).make(),
+                                  "23".text.xl.make(),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
+                )
               ]
             ),
           ),

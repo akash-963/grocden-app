@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class MyOrder {
+  final String id;
   final String shop;
   final String buyer;
   final double totalValue;
@@ -21,6 +22,7 @@ class MyOrder {
     this.cancelledTimestamp,
     this.tag,
     this.status,
+    required this.id,
   });
 
 
@@ -45,6 +47,7 @@ class MyOrder {
         .toList();
 
     return MyOrder(
+      id: data['id'],
       shop: data['shop'],
       buyer: data['buyer'],
       totalValue: data['totalValue'],
