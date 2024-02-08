@@ -48,7 +48,8 @@ class _OrderTileState extends State<OrderTile> {
           subtitle: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text("Date : ${widget.order.createdTimestamp.toDate()}"),
+                if(widget.order.createdTimestamp != null)
+                  Text("Date : ${widget.order.createdTimestamp!.toDate()}"),
                 SizedBox(height: 10,),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,

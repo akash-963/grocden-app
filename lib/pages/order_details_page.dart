@@ -30,7 +30,8 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             Text('Order ID: ${widget.order.id}'),
-            Text('Created Date: ${widget.order.createdTimestamp.toDate()}'),
+            if (widget.order.createdTimestamp != null)
+              Text('Created Date: ${widget.order.createdTimestamp!.toDate()}'),
             if (widget.order.deliveredTimestamp != null)
               Text('Delivered Date: ${widget.order.deliveredTimestamp!.toDate()}'),
             if (widget.order.cancelledTimestamp != null)
@@ -48,29 +49,30 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
               'Ordered Products:',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
-            for (ProductOrderDetails orderDetails in widget.order.products)
-              ExpansionTile(
-                title: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      '${orderDetails.productName.length > 20 ? orderDetails.productName.substring(0, 20) + '...' : orderDetails.productName}',
-                      style: TextStyle(fontSize: 16.0),
-                    ),
-                    Text('\₹${orderDetails.price}'),
-                  ],
-                ),
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+            if(widget.order.products != null)
+              for (ProductOrderDetails orderDetails in widget.order.products!)
+                ExpansionTile(
+                  title: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text('Product: ${orderDetails.productName}'),
-                      Text('Quantity: ${orderDetails.quantity}'),
-                      Text('Price: \₹${orderDetails.price}'),
+                      Text(
+                        '${orderDetails.productName.length > 20 ? orderDetails.productName.substring(0, 20) + '...' : orderDetails.productName}',
+                        style: TextStyle(fontSize: 16.0),
+                      ),
+                      Text('\₹${orderDetails.price}'),
                     ],
                   ),
-                ],
-              ),
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('Product: ${orderDetails.productName}'),
+                        Text('Quantity: ${orderDetails.quantity}'),
+                        Text('Price: \₹${orderDetails.price}'),
+                      ],
+                    ),
+                  ],
+                ),
           ],
         ),
       ),

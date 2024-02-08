@@ -1,5 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:velocity_x/velocity_x.dart';
+import '../models/order_model.dart';
 import '../widgets/app_header.dart';
 
 class HomeTab extends StatefulWidget {
@@ -8,7 +11,85 @@ class HomeTab extends StatefulWidget {
 }
 
 class _HomeTabState extends State<HomeTab> {
+  final userId = FirebaseAuth.instance.currentUser!.uid;
+  int ongoingOrders = 0;
+  int previousOrders = 0;
 
+  // Fetch order IDs from user collection
+  Future<List<String>> fetchOrderIdsForUser() async {
+    try {
+      QuerySnapshot ordersSnapshot = await FirebaseFirestore.instance
+          .collection('shopCollection')
+          .doc(userId)
+          .collection('orders')
+          .get();
+
+      if (ordersSnapshot.docs.isNotEmpty) {
+        List<String> orderIds = ordersSnapshot.docs.map((doc) => doc.id).toList();
+        print(orderIds);
+        return orderIds;
+      }
+
+      return [];
+    } catch (e) {
+      print('Error fetching order IDs: $e');
+      return [];
+    }
+  }
+
+  // Fetch details for each order from orders collection
+  Future<List<MyOrder>> fetchOrdersDetails(List<String> orderIds) async {
+    List<MyOrder> orders = [];
+
+    for (String orderId in orderIds) {
+      try {
+        DocumentSnapshot orderSnapshot = await FirebaseFirestore.instance
+            .collection('ordersCollection')
+            .doc(orderId)
+            .get();
+
+        if (orderSnapshot.exists) {
+
+          MyOrder order = MyOrder(
+            id: orderId,
+            totalValue: orderSnapshot['totalValue'],
+            status: orderSnapshot['status'],
+          );
+
+          orders.add(order);
+        }
+      } catch (e) {
+        print('Error fetching order details: $e');
+      }
+    }
+
+    // print(orders);
+    return orders;
+  }
+
+  // Inside _OrdersTabState
+  Future<void> getOrdersDetails() async {
+    try {
+      List<String> orderIds = await fetchOrderIdsForUser();
+      List<MyOrder> orders = await fetchOrdersDetails(orderIds);
+
+      // Now you can use the 'orders' list as needed
+      setState(() {
+        // ongoingOrders = orders.where((order) => order.status == "ongoing").toList();
+        // previousOrders = orders.where((order) => order.status == "previous").toList();
+        ongoingOrders = orders.where((order) => order.status == "ongoing").length;
+        previousOrders = orders.where((order) => order.status == "ongoing").length;
+      });
+    } catch (e) {
+      print('Error fetching orders: $e');
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getOrdersDetails();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +124,7 @@ class _HomeTabState extends State<HomeTab> {
                                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                                 children: [
                                   "Ongoing Orders".text.xl2.color(Colors.black54).make(),
-                                  "23".text.xl.make(),
+                                  "${ongoingOrders}".text.xl.make(),
                                 ],
                               ),
                             ),

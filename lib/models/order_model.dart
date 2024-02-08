@@ -2,22 +2,22 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class MyOrder {
   final String id;
-  final String shop;
-  final String buyer;
-  final double totalValue;
-  final Timestamp createdTimestamp;
+  String? shop;
+  String? buyer;
+  double? totalValue;
+  Timestamp? createdTimestamp;
   Timestamp? deliveredTimestamp;
   Timestamp? cancelledTimestamp;
   String? tag;
   String? status;
-  List<ProductOrderDetails> products;
+  List<ProductOrderDetails>? products;
 
   MyOrder({
-    required this.shop,
-    required this.buyer,
-    required this.totalValue,
-    required this.createdTimestamp,
-    required this.products,
+    this.shop,
+    this.buyer,
+    this.totalValue,
+    this.createdTimestamp,
+    this.products,
     this.deliveredTimestamp,
     this.cancelledTimestamp,
     this.tag,
@@ -33,7 +33,9 @@ class MyOrder {
     Map<String, dynamic> data = snapshot.data() as Map<String, dynamic>;
 
     // Convert Timestamps to DateTime if needed
-    Timestamp createdTimestamp = (data['createdTimestamp']).toDate();
+    Timestamp createdTimestamp = (data['createdTimestamp']) != null
+        ? (data['createdTimestamp']).toDate()
+        : null;
     Timestamp? deliveredTimestamp = data['deliveredTimestamp'] != null
         ? (data['deliveredTimestamp']).toDate()
         : null;
