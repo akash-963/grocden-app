@@ -14,6 +14,8 @@ class _HomeTabState extends State<HomeTab> {
   final userId = FirebaseAuth.instance.currentUser!.uid;
   int ongoingOrders = 0;
   int previousOrders = 0;
+  int totalOrders = 0;
+  int cancelledOrders = 0;
 
   // Fetch order IDs from user collection
   Future<List<String>> fetchOrderIdsForUser() async {
@@ -75,10 +77,10 @@ class _HomeTabState extends State<HomeTab> {
 
       // Now you can use the 'orders' list as needed
       setState(() {
-        // ongoingOrders = orders.where((order) => order.status == "ongoing").toList();
-        // previousOrders = orders.where((order) => order.status == "previous").toList();
         ongoingOrders = orders.where((order) => order.status == "ongoing").length;
-        previousOrders = orders.where((order) => order.status == "ongoing").length;
+        previousOrders = orders.where((order) => order.status == "delivered").length;
+        cancelledOrders = orders.where((order) => order.status == "cancelled").length;
+        totalOrders = orders.length;
       });
     } catch (e) {
       print('Error fetching orders: $e');
@@ -141,7 +143,7 @@ class _HomeTabState extends State<HomeTab> {
                                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                                 children: [
                                   "Completed Orders".text.xl2.color(Colors.black54).make(),
-                                  "23".text.xl.make(),
+                                  "${previousOrders}".text.xl.make(),
                                 ],
                               ),
                             ),
@@ -162,7 +164,7 @@ class _HomeTabState extends State<HomeTab> {
                                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                                 children: [
                                   "Cancelled Orders".text.xl2.color(Colors.black54).make(),
-                                  "23".text.xl.make(),
+                                  "${cancelledOrders}".text.xl.make(),
                                 ],
                               ),
                             ),
@@ -179,7 +181,7 @@ class _HomeTabState extends State<HomeTab> {
                                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                                 children: [
                                   "Total Orders".text.xl2.color(Colors.black54).make(),
-                                  "23".text.xl.make(),
+                                  "${totalOrders}".text.xl.make(),
                                 ],
                               ),
                             ),
@@ -197,46 +199,3 @@ class _HomeTabState extends State<HomeTab> {
 
   }
 }
-
-
-
-
-
-
-
-
-
-
-// class DashBoardModel {
-//   Rx<List<OngoingordersItemModel>> ongoingordersItemList = Rx([
-//     OngoingordersItemModel(
-//         ongoingOrdersText: "Ongoing Orders".obs, tenText: "10".obs),
-//     OngoingordersItemModel(
-//         ongoingOrdersText: "Completed Orders".obs, tenText: "57".obs),
-//     OngoingordersItemModel(
-//         ongoingOrdersText: "Total Orders".obs, tenText: "67".obs),
-//     OngoingordersItemModel(
-//         ongoingOrdersText: "Total Sales".obs, tenText: "1000".obs)
-//   ]);
-// }
-
-
-
-
-// class OngoingordersItemModel {
-//   OngoingordersItemModel({
-//     this.ongoingOrdersText,
-//     this.tenText,
-//     this.id,
-//   }) {
-//     ongoingOrdersText = ongoingOrdersText ?? Rx("Ongoing Orders");
-//     tenText = tenText ?? Rx("10");
-//     id = id ?? Rx("");
-//   }
-//
-//   Rx<String>? ongoingOrdersText;
-//
-//   Rx<String>? tenText;
-//
-//   Rx<String>? id;
-// }
