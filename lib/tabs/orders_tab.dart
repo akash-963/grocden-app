@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +19,7 @@ class _OrdersTabState extends State<OrdersTab> {
   final userId = FirebaseAuth.instance.currentUser!.uid;
   List<MyOrder> ongoingOrders = [];
   List<MyOrder> previousOrders = [];
+  late Timer _timer;
 
   // Inside _OrdersTabState
   void getOrdersDetails() async {
@@ -27,7 +30,7 @@ class _OrdersTabState extends State<OrdersTab> {
       // Now you can use the 'orders' list as needed
       setState(() {
         ongoingOrders = orders.where((order) => order.status == "ongoing").toList();
-        previousOrders = orders.where((order) => order.status == "previous").toList();
+        previousOrders = orders.where((order) => order.status == "delivered" || order.status == "cancelled").toList();
       });
     } catch (e) {
       print('Error fetching orders: $e');
@@ -125,7 +128,21 @@ class _OrdersTabState extends State<OrdersTab> {
     // TODO: implement initState
     super.initState();
     getOrdersDetails();
+    // Schedule periodic timer to update orders every 10 seconds
+    _timer = Timer.periodic(Duration(seconds: 10), (Timer timer) {
+      getOrdersDetails();
+    });
   }
+
+
+  @override
+  void dispose() {
+    // Cancel the timer when the widget is disposed to prevent memory leaks
+    _timer.cancel();
+    super.dispose();
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -179,56 +196,3 @@ class OrderList extends StatelessWidget {
     );
   }
 }
-
-
-// class OrderDetailsPage extends StatelessWidget {
-//   final MyOrder order;
-//   const OrderDetailsPage({super.key, required this.order});
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return const Placeholder();
-//   }
-// }
-
-
-// class OrderTile extends StatelessWidget {
-//   final MyOrder order;
-//
-//   const OrderTile({Key? key, required this.order}) : super(key: key);
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Card(
-//       margin: EdgeInsets.all(8.0),
-//       child: ListTile(
-//         title: Text('Order ID: '),
-//         //${order.orderId}'),
-//         subtitle: Column(
-//           crossAxisAlignment: CrossAxisAlignment.start,
-//           children: [
-//             Text('Shop: ${order.shop}'),
-//             Text('Buyer: ${order.buyer}'),
-//             Text('Total Value: ${order.totalValue}'),
-//             Text('Status: ${order.status}'),
-//             Text('Created Date: ${order.createdTimestamp.toDate()}'),
-//             if (order.deliveredTimestamp != null)
-//               Text('Delivered Date: ${order.deliveredTimestamp!.toDate()}'),
-//             if (order.cancelledTimestamp != null)
-//               Text('Cancelled Date: ${order.cancelledTimestamp!.toDate()}'),
-//             // Display other order details as needed
-//           ],
-//         ),
-//         onTap: () {
-//           // Handle the tap event, e.g., navigate to a detailed order view
-//           Navigator.push(
-//             context,
-//             MaterialPageRoute(
-//               builder: (context) => OrderDetailsPage(order: order),
-//             ),
-//           );
-//         },
-//       ),
-//     );
-//   }
-// }
